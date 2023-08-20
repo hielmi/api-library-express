@@ -2,7 +2,6 @@ import { nanoid } from 'nanoid';
 import * as UserRepo from '../repository/user.js';
 import { successResp, errorResp } from "../utils/response.js";
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
 const SECRET_ACCESSTOKEN = 'HIELMISULAEMAN';
 const SECRET_REFRESHTOKEN = 'SULAEMANHIELMI';

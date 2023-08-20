@@ -7,22 +7,21 @@ const routes = express.Router();
 
 // login
 routes.post('/login', ValidationService.authUser);
+routes.post('/token/:id', ValidationService.refreshAccessToken);
 
 // route for book
 routes.get('/books', BookService.getBooks);
 routes.get('/books/:id', BookService.getBookById);
-routes.post('/books', BookService.addBook);
-routes.put('/books/:id', BookService.updateBook);
-routes.delete('/books/:id', BookService.deleteBook);
+routes.post('/books', ValidationService.validateToken, BookService.addBook);
+routes.put('/books/:id', ValidationService.validateToken, BookService.updateBook);
+routes.delete('/books/:id', ValidationService.validateToken, BookService.deleteBook);
 
 // route for user
-routes.get('/users', UserService.getUsers);
-routes.get('/users/:id', UserService.getUserById);
+routes.get('/users', ValidationService.validateToken, UserService.getUsers);
+routes.get('/users/:id', ValidationService.validateToken, UserService.getUserById);
 routes.post('/users', UserService.addUser);
-routes.put('/users/:id', UserService.updateUser);
-routes.delete('/users/:id', UserService.deleteUser);
+routes.put('/users/:id', ValidationService.validateToken, UserService.updateUser);
+routes.delete('/users/:id', ValidationService.validateToken, UserService.deleteUser);
 
-// route for auth
-routes.post('/token/:id', ValidationService.refreshAccessToken);
 
 export default routes;

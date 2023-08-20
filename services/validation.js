@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import * as validationRepo from '../repository/validation.js';
+import * as UserRepo from '../repository/user.js';
 import { successResp, errorResp } from '../utils/response.js';
 
 const SECRET_ACCESSTOKEN = 'HIELMISULAEMAN';
@@ -58,22 +59,39 @@ export const authUser = async (req, res, next) => {
     }
 };
 
-export const validateToken = (req, res, next) => {
+export const validateToken = async (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
 
         if (authHeader && authHeader.startsWith('Bearer ')) {
             const accessToken = authHeader.slice(7);
             const decoded = jwt.verify(accessToken, SECRET_ACCESSTOKEN);
-            if (decoded) {
+
+            let user;
+
+            if (accesTokenInvalid.has(accessToken)) {
+                return res.status(401).json({ message: 'Access token is invalidated' });
             }
-            next();
+
+            if (decoded) {
+                user = await UserRepo.getDataById(decoded.user_id);
+            } else {
+                throw Error("Unauthorized!")
+            }
+
+            if (user[0].length > 0) {
+                next()
+            } else {
+                throw Error("Unauthorized!")
+            }
         } else {
             throw Error("Unauthorized!")
         }
     } catch (err) {
-        err.statusCode = 401;
-        next(err);
+        res.status(401).send({
+            "code": 401,
+            "message": err.message
+        });
     }
 };
 
