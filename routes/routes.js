@@ -15,6 +15,6 @@ routes.put('/books/:id', BookService.updateBook);
 routes.delete('/books/:id', BookService.deleteBook);
 
 // route for auth
-routes.post('/token', ValidationService.refreshAccessToken);
+routes.post('/token/:id', ValidationService.refreshAccessToken);
 
 export default routes;

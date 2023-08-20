@@ -19,9 +19,9 @@ export const createToken = (user_id, refresh_token, created_at) => {
     return result
 }
 
-export const updateRefreshToke = (user_id, refresh_token, updated_at) => {
+export const updateRefreshToken = (user_id, refresh_token, updated_at) => {
     const sql = 'UPDATE user_tokens SET refresh_token = ?, updated_at = ? WHERE user_id = ?';
-    const values = [user_id, refresh_token, updated_at];
+    const values = [refresh_token, updated_at, user_id];
     const result = dbPool.query(sql, values);
     return result;
 }
